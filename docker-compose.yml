@@ -1,0 +1,113 @@
+version: '3.8'
+
+services:
+  # === APPLICATION SERVICES ===
+  auth:
+    build: ./auth
+    container_name: auth_service
+    env_file:
+      - ./auth/.env
+    ports:
+      - "3000:3000"
+    networks:
+      - microservice-network
+    depends_on:
+      - mongo-auth # <-- Cập nhật dependency
+
+  product:
+    build: ./product
+    container_name: product_service
+    env_file:
+      - ./product/.env
+    ports:
+      - "3001:3001"
+    networks:
+      - microservice-network
+    depends_on:
+      - mongo-product # <-- Cập nhật dependency
+      - rabbitmq
+
+  order:
+    build: ./order
+    container_name: order_service
+    env_file:
+      - ./order/.env
+    ports:
+      - "3002:3002"
+    networks:
+      - microservice-network
+    depends_on:
+      - mongo-order # <-- Cập nhật dependency
+      - rabbitmq
+
+  # === INFRASTRUCTURE SERVICES ===
+  api-gateway:
+    build: ./api-gateway
+    container_name: api_gateway
+    ports:
+      - "3003:3003"
+    networks:
+      - microservice-network
+    depends_on:
+      - auth
+      - product
+      - order
+
+  rabbitmq:
+    image: rabbitmq:3.11-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    env_file:
+      - .env
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+    networks:
+      - microservice-network
+
+  # === DATABASE CONTAINERS (ONE PER SERVICE) ===
+  mongo-auth:
+    image: mongo:latest
+    container_name: mongodb_for_auth
+    ports:
+      - "27017:27017" # <-- Port cho DB Auth
+    volumes:
+      - mongo-auth-data:/data/db # <-- Volume riêng
+    networks:
+      - microservice-network
+
+  mongo-product:
+    image: mongo:latest
+    container_name: mongodb_for_product
+    ports:
+      - "27018:27017" # <-- Dùng port 27018 bên ngoài để tránh xung đột
+    volumes:
+      - mongo-product-data:/data/db # <-- Volume riêng
+    networks:
+      - microservice-network
+
+  mongo-order:
+    image: mongo:latest
+    container_name: mongodb_for_order
+    ports:
+      - "27019:27017" # <-- Dùng port 27019 bên ngoài để tránh xung đột
+    volumes:
+      - mongo-order-data:/data/db # <-- Volume riêng
+    networks:
+      - microservice-network
+
+# === NETWORKS AND VOLUMES DEFINITIONS ===
+networks:
+  microservice-network:
+    driver: bridge
+
+volumes:
+  rabbitmq-data:
+    driver: local
+  mongo-auth-data: # <-- Volume cho DB Auth
+    driver: local
+  mongo-product-data: # <-- Volume cho DB Product
+    driver: local
+  mongo-order-data: # <-- Volume cho DB Order
+    driver: local

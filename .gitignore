@@ -1,0 +1,62 @@
+# ===================================================================
+# Dependencies
+# ===================================================================
+# Thư mục chứa các gói đã cài đặt. Luôn được tạo lại khi chạy `npm install`.
+# Đây là thư mục quan trọng nhất cần ignore.
+node_modules/
+
+
+# ===================================================================
+# Environment Variables & Secrets
+# ===================================================================
+# Các file môi trường chứa thông tin nhạy cảm như mật khẩu database, JWT secret...
+# TUYỆT ĐỐI KHÔNG commit các file này lên Git.
+.env
+.env.*
+!.env.example 
+# Dòng !.env.example ở trên là một ngoại lệ, cho phép bạn commit một file .env mẫu
+# để người khác biết cần tạo các biến môi trường nào, nhưng không chứa giá trị thật.
+
+
+# ===================================================================
+# Logs
+# ===================================================================
+# Các file log được tạo ra khi ứng dụng chạy hoặc khi có lỗi.
+logs/
+*.log
+npm-debug.log*
+yarn-error.log
+yarn-debug.log
+*.log*
+
+
+# ===================================================================
+# Build & Distribution Artifacts
+# ===================================================================
+# Các thư mục chứa code đã được build hoặc compile (ví dụ từ TypeScript).
+dist/
+build/
+
+
+# ===================================================================
+# Test & Coverage Reports
+# ===================================================================
+# Các báo cáo được tạo ra sau khi chạy test coverage.
+coverage/
+.nyc_output/
+
+
+# ===================================================================
+# IDE / Editor & Operating System Files
+# ===================================================================
+# Các file cấu hình riêng của từng IDE hoặc file hệ thống.
+# Việc ignore chúng giúp tránh xung đột không cần thiết giữa các thành viên trong nhóm.
+
+# VSCode
+.vscode/
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
