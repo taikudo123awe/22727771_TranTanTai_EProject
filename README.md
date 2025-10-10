@@ -135,5 +135,4 @@ npm test
 
 ---
 **Tác giả:**
-
-* [Tên của bạn]
+Trần Tấn Tài
