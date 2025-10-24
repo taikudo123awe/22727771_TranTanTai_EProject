@@ -1,5 +1,6 @@
+const { get } = require("mongoose");
 const Product = require("../models/product");
-const messageBroker = require("../utils/messageBroker");
+const messageBroker = require("../utils/messageBroker"); //
 const uuid = require('uuid');
 
 /**
@@ -109,6 +110,23 @@ class ProductController {
       res.status(500).json({ message: "Server error" });
     }
   }
+
+
+async getProductsById(req, res, next) { 
+  try {
+    const token = req.headers.authorization;
+    if (!token) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+    const { ids } = req.body;
+    const products = await Product.find({ _id: { $in: ids } });
+
+    res.status(200).json(products);
+  } catch (error) { 
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  } 
 }
+};
 
 module.exports = ProductController;
