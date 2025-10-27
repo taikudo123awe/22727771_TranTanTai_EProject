@@ -112,21 +112,39 @@ class ProductController {
   }
 
 
-async getProductsById(req, res, next) { 
-  try {
-    const token = req.headers.authorization;
-    if (!token) {
-      return res.status(401).json({ message: "Unauthorized" });
-    }
-    const { ids } = req.body;
-    const products = await Product.find({ _id: { $in: ids } });
+  async getProductsById(req, res, next) { 
+    try {
+      const token = req.headers.authorization;
+      if (!token) {
+        return res.status(401).json({ message: "Unauthorized" });
+      }
+      const { productId } = req.params; 
+      const product = await Product.findById(productId); // Dùng findById
 
-    res.status(200).json(products);
-  } catch (error) { 
-    console.error(error);
-    res.status(500).json({ message: "Server error" });
-  } 
+      res.status(200).json(product);
+    } catch (error) { 
+      console.error(error);
+      res.status(500).json({ message: "Server error" });
+    } 
+  }
+
+  // async getProdctById(req, res, next){
+  //   try{
+  //     const token = req.headers.authorization;
+  //     if(!token){
+  //       return res.status(401).json({message: "Unauthorized"});
+  //     }
+  //     const {productId} = req.params;
+  //     const product = await Product.findById(productId);
+  //     res.status(200).json(product);
+  //   }
+  //   catch(error)
+  //   {
+  //     console.error(error);
+  //     res.status(500).json({message: "Server error"});
+  //   }
+  // }
+
 }
-};
 
 module.exports = ProductController;

@@ -10,7 +10,7 @@ Hệ thống được chia thành các service độc lập, mỗi service đả
 * **Authentication Service**: Quản lý việc đăng ký, đăng nhập và xác thực người dùng bằng JWT (JSON Web Tokens).
 * **Product Service**: Quản lý thông tin sản phẩm (CRUD), kiểm tra tồn kho, giá cả.
 * **Order Service**: Xử lý logic đặt hàng, tạo và quản lý đơn hàng của người dùng.
-
+# Test CI/CD trigger
 ### Giao tiếp giữa các Service
 * **Giao tiếp đồng bộ (Synchronous):** Client giao tiếp với các service thông qua API Gateway bằng các request HTTP RESTful.
 * **Giao tiếp bất đồng bộ (Asynchronous):** Hệ thống sử dụng **RabbitMQ** để các service có thể giao tiếp với nhau một cách không đồng bộ (ví dụ: `Order Service` thông báo cho `Product Service` cập nhật lại số lượng tồn kho sau khi một đơn hàng được tạo).
